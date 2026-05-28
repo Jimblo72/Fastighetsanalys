@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terräng — Kommersiell fastighetsanalys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TERRÄNG — designsystem
+   Editorial "investment memorandum"-estetik.
+   Varmt papper, djup bläckton, pine som struktur, clay som möjlighet.
+   ============================================================ */
+:root{
+  --paper:#F4F1EA;
+  --paper-2:#FBF9F4;
+  --paper-3:#EFEBE0;
+  --ink:#1C1F1A;
+  --ink-soft:#4A4E45;
+  --ink-faint:#80847A;
+  --line:#DBD6C8;
+  --line-strong:#C9C3B2;
+  --pine:#2E4034;
+  --pine-2:#3D5444;
+  --pine-faint:#E4EAE2;
+  --clay:#A85A35;
+  --clay-2:#B5673E;
+  --clay-faint:#F2E4DA;
+  --ok:#3D6B4A;
+  --warn:#B5673E;
+  --warn-bg:#F6E7DC;
+  --danger:#9B3D2E;
+
+  /* spår */
+  --spar-bostad:#3A6B6E;
+  --spar-handel:#A85A35;
+  --spar-industri:#566073;
+  --spar-ramark:#8A7235;
+  --spar-jv:#6E4A6B;
+
+  --r-sm:6px; --r-md:10px; --r-lg:16px;
+  --shadow:0 1px 2px rgba(28,31,26,.06), 0 8px 24px -12px rgba(28,31,26,.18);
+  --shadow-lg:0 4px 8px rgba(28,31,26,.08), 0 24px 60px -20px rgba(28,31,26,.30);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Hanken Grotesk',-apple-system,sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(28,31,26,.035) 1px, transparent 0);
+  background-size:22px 22px;
+}
+h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;line-height:1.08;letter-spacing:-.01em}
+.mono{font-family:'IBM Plex Mono',monospace}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit;font-size:14px;color:var(--ink)}
+::selection{background:var(--pine);color:var(--paper-2)}
+
+/* ---------- topbar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;gap:24px;
+  padding:14px 28px;
+  background:rgba(244,241,234,.86);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:baseline;gap:10px;flex-shrink:0}
+.brand .mark{
+  font-family:'Fraunces',serif;font-weight:600;font-size:23px;letter-spacing:.04em;
+  color:var(--pine);
+}
+.brand .mark .dot{color:var(--clay)}
+.brand .sub{font-size:11px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase}
+.brand .ver{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-faint);
+  border:1px solid var(--line-strong);border-radius:20px;padding:2px 8px;margin-left:2px;
+}
+.topbar-spacer{flex:1}
+.portfolio-pick{display:flex;align-items:center;gap:8px}
+.portfolio-pick select{
+  appearance:none;background:var(--paper-2);border:1px solid var(--line-strong);
+  border-radius:var(--r-sm);padding:8px 30px 8px 12px;font-weight:500;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%2380847A' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;
+}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 16px;border-radius:var(--r-sm);font-weight:600;font-size:14px;
+  transition:.15s ease;white-space:nowrap;border:1px solid transparent;
+}
+.btn svg{width:16px;height:16px}
+.btn-primary{background:var(--pine);color:var(--paper-2)}
+.btn-primary:hover{background:var(--pine-2)}
+.btn-ghost{background:var(--paper-2);color:var(--ink);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--ink-faint);background:var(--paper-3)}
+.btn-clay{background:var(--clay);color:#fff}
+.btn-clay:hover{background:var(--clay-2)}
+.btn-sm{padding:6px 11px;font-size:13px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-text{color:var(--ink-soft);font-weight:600;padding:6px 8px;border-radius:var(--r-sm)}
+.btn-text:hover{background:var(--paper-3);color:var(--ink)}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:32px 28px 96px}
+
+/* ---------- empty state ---------- */
+.empty{
+  max-width:760px;margin:48px auto;text-align:center;
+}
+.empty h1{font-size:46px;font-variation-settings:'opsz' 120;margin-bottom:14px}
+.empty .lead{font-size:17px;color:var(--ink-soft);max-width:560px;margin:0 auto 38px;line-height:1.55}
+.intake-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px;text-align:left}
+.intake-card{
+  background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:26px;transition:.18s ease;cursor:pointer;
+}
+.intake-card:hover{border-color:var(--pine);box-shadow:var(--shadow);transform:translateY(-2px)}
+.intake-card .ico{
+  width:42px;height:42px;border-radius:11px;display:grid;place-items:center;
+  background:var(--pine-faint);color:var(--pine);margin-bottom:16px;
+}
+.intake-card .ico svg{width:22px;height:22px}
+.intake-card.clay .ico{background:var(--clay-faint);color:var(--clay)}
+.intake-card h3{font-size:20px;margin-bottom:7px}
+.intake-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+
+/* ---------- portfolio header ---------- */
+.pf-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:8px;flex-wrap:wrap}
+.pf-title h1{font-size:36px;font-variation-settings:'opsz' 110;margin-bottom:4px}
+.pf-meta{display:flex;gap:14px;align-items:center;font-size:13px;color:var(--ink-faint)}
+.pf-meta .mono{color:var(--ink-soft)}
+.pf-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+/* ---------- de fem affärerna bar ---------- */
+.synthbar{
+  background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:20px 22px;margin:24px 0 28px;
+}
+.synthbar .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+.synthbar .lbl b{color:var(--clay);font-weight:600}
+.seg{display:flex;height:13px;border-radius:7px;overflow:hidden;background:var(--paper-3);margin-bottom:16px}
+.seg span{transition:.4s ease;min-width:0}
+.seg-legend{display:flex;flex-wrap:wrap;gap:18px}
+.seg-legend .li{display:flex;align-items:center;gap:8px;font-size:12.5px}
+.seg-legend .sw{width:11px;height:11px;border-radius:3px;flex-shrink:0}
+.seg-legend .li .n{font-weight:700;font-variation-settings:'opsz' 40}
+.seg-legend .li .desc{color:var(--ink-faint);font-size:11px}
+.kat-A-bg{background:var(--pine)}
+.kat-B-bg{background:var(--clay)}
+.kat-C-bg{background:var(--spar-jv)}
+.kat-D-bg{background:var(--spar-industri)}
+.kat-E-bg{background:var(--spar-ramark)}
+
+/* ---------- toolbar ---------- */
+.tools{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.tools .sortgroup{display:flex;gap:2px;background:var(--paper-3);padding:3px;border-radius:var(--r-sm);border:1px solid var(--line)}
+.tools .sortgroup button{padding:5px 11px;border-radius:5px;font-size:12.5px;font-weight:600;color:var(--ink-faint)}
+.tools .sortgroup button.on{background:var(--paper-2);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.tools .label{font-size:12px;color:var(--ink-faint)}
+
+/* ---------- object cards ---------- */
+.obj-list{display:flex;flex-direction:column;gap:10px}
+.obj{
+  background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:16px 18px;display:grid;
+  grid-template-columns:30px 1fr auto;gap:16px;align-items:center;
+  transition:.15s ease;position:relative;overflow:hidden;
+}
+.obj:hover{border-color:var(--line-strong);box-shadow:var(--shadow)}
+.obj .stripe{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--line-strong)}
+.obj[data-spar=bostad] .stripe{background:var(--spar-bostad)}
+.obj[data-spar=handel] .stripe{background:var(--spar-handel)}
+.obj[data-spar=industri] .stripe{background:var(--spar-industri)}
+.obj[data-spar=ramark] .stripe{background:var(--spar-ramark)}
+.obj[data-spar=jv] .stripe{background:var(--spar-jv)}
+.obj .idx{
+  font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink-faint);
+  text-align:center;font-weight:500;
+}
+.obj .body{min-width:0}
+.obj .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:5px}
+.obj .bet{font-family:'Fraunces',serif;font-size:18px;font-weight:600}
+.obj .ort{font-size:12.5px;color:var(--ink-faint)}
+.obj .ort:before{content:'·';margin-right:8px;color:var(--line-strong)}
+.obj .why{font-size:13px;color:var(--ink-soft);line-height:1.45;max-width:64ch}
+.obj .why.empty{color:var(--ink-faint);font-style:italic}
+.obj .right{display:flex;align-items:center;gap:10px}
+
+/* chips */
+.chip{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;letter-spacing:.02em;
+  border:1px solid transparent;white-space:nowrap;
+}
+.chip.spar{background:var(--paper-3);color:var(--ink-soft);border-color:var(--line)}
+.chip.spar .d{width:7px;height:7px;border-radius:50%}
+.chip.spar[data-s=bostad] .d{background:var(--spar-bostad)}
+.chip.spar[data-s=handel] .d{background:var(--spar-handel)}
+.chip.spar[data-s=industri] .d{background:var(--spar-industri)}
+.chip.spar[data-s=ramark] .d{background:var(--spar-ramark)}
+.chip.spar[data-s=jv] .d{background:var(--spar-jv)}
+.kat{
+  width:26px;height:26px;border-radius:7px;display:grid;place-items:center;
+  font-family:'Fraunces',serif;font-weight:700;font-size:14px;color:#fff;flex-shrink:0;
+}
+.kat[data-k=A]{background:var(--pine)}
+.kat[data-k=B]{background:var(--clay)}
+.kat[data-k=C]{background:var(--spar-jv)}
+.kat[data-k=D]{background:var(--spar-industri)}
+.kat[data-k=E]{background:var(--spar-ramark)}
+.kat.ph{background:var(--paper-3);color:var(--ink-faint);border:1px dashed var(--line-strong)}
+
+.larm-badge{
+  display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;
+  color:var(--warn);background:var(--warn-bg);border-radius:20px;padding:3px 9px;cursor:help;
+}
+.larm-badge svg{width:12px;height:12px}
+
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.status-dot.pending{background:var(--line-strong)}
+.status-dot.running{background:var(--clay);animation:pulse 1s infinite}
+.status-dot.done{background:var(--ok)}
+.status-dot.error{background:var(--danger)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* dataflaggor (grounding) — definierade nu, används i djupanalys (steg 4) */
+.tag{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;letter-spacing:.03em}
+.tag-data{background:var(--pine);color:var(--paper-2)}
+.tag-bedom{background:transparent;color:var(--ink-soft);border:1px solid var(--line-strong)}
+.tag-hyp{background:transparent;color:var(--clay);border:1px dashed var(--clay)}
+
+/* ---------- modal / drawer ---------- */
+.overlay{
+  position:fixed;inset:0;z-index:60;background:rgba(28,31,26,.34);
+  backdrop-filter:blur(3px);display:none;
+}
+.overlay.show{display:block;animation:fade .15s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(640px,100%);z-index:61;
+  background:var(--paper);border-left:1px solid var(--line);
+  box-shadow:var(--shadow-lg);display:none;flex-direction:column;
+  transform:translateX(20px);
+}
+.drawer.show{display:flex;animation:slidein .22s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes slidein{to{transform:translateX(0)}}
+.drawer-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 26px;border-bottom:1px solid var(--line);background:var(--paper-2);
+}
+.drawer-head h2{font-size:21px}
+.drawer-head .x{width:34px;height:34px;border-radius:var(--r-sm);display:grid;place-items:center;color:var(--ink-faint)}
+.drawer-head .x:hover{background:var(--paper-3);color:var(--ink)}
+.drawer-body{flex:1;overflow-y:auto;padding:24px 26px}
+.drawer-foot{
+  padding:16px 26px;border-top:1px solid var(--line);background:var(--paper-2);
+  display:flex;gap:10px;justify-content:flex-end;
+}
+
+/* big modal (pdf review) */
+.modal{
+  position:fixed;inset:24px;z-index:61;max-width:1080px;margin:auto;
+  background:var(--paper);border-radius:var(--r-lg);border:1px solid var(--line);
+  box-shadow:var(--shadow-lg);display:none;flex-direction:column;overflow:hidden;
+}
+.modal.show{display:flex;animation:pop .2s cubic-bezier(.2,.7,.2,1)}
+@keyframes pop{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+.modal-head{padding:22px 28px;border-bottom:1px solid var(--line);background:var(--paper-2)}
+.modal-head h2{font-size:23px;margin-bottom:4px}
+.modal-head p{font-size:13.5px;color:var(--ink-soft)}
+.modal-body{flex:1;overflow-y:auto;padding:24px 28px;background:var(--paper)}
+.modal-foot{padding:16px 28px;border-top:1px solid var(--line);background:var(--paper-2);display:flex;justify-content:space-between;align-items:center;gap:12px}
+
+/* ---------- form ---------- */
+.field{margin-bottom:18px}
+.field > label{display:block;font-size:12px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.field > label .hint{text-transform:none;letter-spacing:0;font-weight:400;color:var(--ink-faint);font-size:12px}
+.field input[type=text],.field input[type=number],.field select,.field textarea{
+  width:100%;background:var(--paper-2);border:1px solid var(--line-strong);
+  border-radius:var(--r-sm);padding:10px 12px;transition:.12s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-color:var(--pine);box-shadow:0 0 0 3px var(--pine-faint);
+}
+.field textarea{resize:vertical;min-height:64px;line-height:1.5}
+.field select{appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%2380847A' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.fieldset{
+  border:1px solid var(--line);border-radius:var(--r-md);padding:18px;margin-bottom:18px;background:var(--paper-2);
+}
+.fieldset > legend{
+  font-family:'Fraunces',serif;font-size:15px;font-weight:600;padding:0 8px;color:var(--pine);
+}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{
+  display:inline-flex;align-items:center;gap:7px;background:var(--paper);border:1px solid var(--line-strong);
+  border-radius:20px;padding:6px 13px;font-size:13px;cursor:pointer;transition:.12s;user-select:none;
+}
+.checks label:hover{border-color:var(--ink-faint)}
+.checks input{display:none}
+.checks input:checked + span{font-weight:600}
+.checks label:has(input:checked){background:var(--pine-faint);border-color:var(--pine);color:var(--pine)}
+.cond{display:none}
+.cond.show{display:block;animation:fade .15s ease}
+
+/* extract review card */
+.rev{display:flex;flex-direction:column;gap:14px}
+.rev-item{border:1px solid var(--line);border-radius:var(--r-md);background:var(--paper-2);overflow:hidden}
+.rev-item.flagged{border-color:var(--warn)}
+.rev-head{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--paper-3);border-bottom:1px solid var(--line)}
+.rev-head .num{font-family:'IBM Plex Mono',monospace;color:var(--ink-faint);font-size:13px}
+.rev-head .bet{font-family:'Fraunces',serif;font-size:17px;font-weight:600;flex:1}
+.rev-head input.bet-edit{flex:1;font-family:'Fraunces',serif;font-size:17px;font-weight:600;background:var(--paper);border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:5px 10px}
+.rev-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;padding:14px 16px;font-size:13px}
+.rev-grid .cell label{display:block;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px}
+.rev-grid .cell input,.rev-grid .cell select{width:100%;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-sm);padding:6px 9px;font-size:13px}
+.rev-grid .cell.full{grid-column:1/-1}
+.rev-flags{padding:0 16px 14px}
+.flag{display:flex;gap:9px;align-items:flex-start;background:var(--warn-bg);border-radius:var(--r-sm);padding:9px 12px;font-size:12.5px;color:#7a4326;margin-top:8px}
+.flag svg{width:15px;height:15px;flex-shrink:0;margin-top:1px}
+.rev-actions{display:flex;justify-content:flex-end;padding:0 16px 14px}
+
+/* progress */
+.progress-wrap{display:none;align-items:center;gap:14px;background:var(--pine);color:var(--paper-2);border-radius:var(--r-md);padding:12px 18px;margin-bottom:18px}
+.progress-wrap.show{display:flex}
+.progress-wrap .bar{flex:1;height:6px;background:rgba(255,255,255,.2);border-radius:4px;overflow:hidden}
+.progress-wrap .bar i{display:block;height:100%;background:var(--clay-2);width:0;transition:.3s ease;border-radius:4px}
+.progress-wrap .txt{font-size:13px;font-weight:600;white-space:nowrap}
+.progress-wrap .mono{font-size:12px;opacity:.85}
+
+/* toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:var(--paper-2);padding:12px 20px;border-radius:var(--r-md);
+  font-size:14px;font-weight:500;z-index:80;opacity:0;pointer-events:none;transition:.25s ease;box-shadow:var(--shadow-lg);
+  display:flex;align-items:center;gap:10px;max-width:90vw;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.err{background:var(--danger)}
+.toast svg{width:16px;height:16px;flex-shrink:0}
+
+.muted{color:var(--ink-faint)}
+.empty-block{text-align:center;padding:60px 20px;color:var(--ink-faint)}
+.empty-block svg{width:40px;height:40px;margin-bottom:14px;opacity:.5}
+.hidden{display:none!important}
+.detailrow{font-size:12px;color:var(--ink-faint);margin-top:5px;display:flex;gap:14px;flex-wrap:wrap}
+.detailrow b{color:var(--ink-soft);font-weight:600}
+
+@media(max-width:720px){
+  .intake-cards{grid-template-columns:1fr}
+  .row2,.row3{grid-template-columns:1fr}
+  .obj{grid-template-columns:1fr;gap:10px}
+  .obj .right{justify-content:flex-start}
+  .rev-grid{grid-template-columns:1fr}
+  .empty h1{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="mark">Terräng<span class="dot">.</span></span>
+    <span class="sub">Kommersiell fastighetsanalys</span>
+    <span class="ver">v1 · steg 1–3</span>
+  </div>
+  <div class="topbar-spacer"></div>
+  <div class="portfolio-pick" id="pfPick"></div>
+  <button class="btn btn-ghost btn-sm" id="newPfBtn">
+    <svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    Ny portfölj
+  </button>
+</div>
+
+<div class="wrap" id="main"></div>
+
+<!-- DRAWER: objektformulär -->
+<div class="overlay" id="drawerOverlay"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h2 id="drawerTitle">Nytt objekt</h2>
+    <button class="x" id="drawerClose"><svg viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="drawer-body" id="formBody"></div>
+  <div class="drawer-foot">
+    <button class="btn btn-ghost" id="formCancel">Avbryt</button>
+    <button class="btn btn-primary" id="formSave">Spara objekt</button>
+  </div>
+</div>
+
+<!-- MODAL: PDF-granskning -->
+<div class="overlay" id="modalOverlay"></div>
+<div class="modal" id="reviewModal">
+  <div class="modal-head">
+    <h2>Granska & korrigera</h2>
+    <p>Claude har tolkat portfölj-PDF:en. Inget går in i analysen förrän du bekräftat. Rödmarkerade objekt har inkonsistenser som bör verifieras.</p>
+  </div>
+  <div class="modal-body" id="reviewBody"></div>
+  <div class="modal-foot">
+    <span class="muted" id="reviewCount"></span>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost" id="reviewCancel">Avbryt</button>
+      <button class="btn btn-primary" id="reviewConfirm">Lägg till i portföljen</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="pdfInput" accept="application/pdf" class="hidden">
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   TERRÄNG — applikationslogik
+   ============================================================ */
+
+/* ---------- metadata ---------- */
+const SPAR = {
+  bostad:   {label:'Bostad',                short:'BOS', color:'var(--spar-bostad)'},
+  handel:   {label:'Handel & verksamhet',   short:'HAN', color:'var(--spar-handel)'},
+  industri: {label:'Industri & logistik',   short:'IND', color:'var(--spar-industri)'},
+  ramark:   {label:'Råmark & infrastruktur',short:'RÅM', color:'var(--spar-ramark)'},
+  jv:       {label:'JV-andel',              short:'JV',  color:'var(--spar-jv)'}
+};
+const KATEGORI = {
+  A:{label:'Likvid byggrätt',              desc:'Lagakraftvunnen DP'},
+  B:{label:'Värdetrigger via planarbete',  desc:'Pågående DP'},
+  C:{label:'JV-andel',                     desc:'Delägt bolag'},
+  D:{label:'Verksamhet',                   desc:'Industri / handel'},
+  E:{label:'Råmarksspekulation',           desc:'Infrastrukturtrigger'}
+};
+const ANVANDNING = [
+  {c:'B',label:'B — Bostäder'},
+  {c:'C',label:'C — Centrum'},
+  {c:'H',label:'H — Handel'},
+  {c:'K',label:'K — Kontor'},
+  {c:'S',label:'S — Skola/vård'},
+  {c:'Industri',label:'Industri'}
+];
+const SKEDEN = ['Uppstart','Samråd','Granskning','Inför antagande'];
+
+/* ---------- state ---------- */
+const LS_KEY = 'terrang_v1';
+let state = load();
+let sortKey = 'kategori';
+let editingId = null;       // objekt som redigeras i drawer
+let reviewObjekt = [];      // temporära extraherade objekt under granskning
+
+function load(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(raw){ const s = JSON.parse(raw); if(s && s.portfolios) return s; }
+  }catch(e){}
+  return { portfolios:[], activeId:null };
+}
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function activePf(){ return state.portfolios.find(p=>p.id===state.activeId) || null; }
+
+/* ---------- objektfabrik ---------- */
+function newObjekt(seed){
+  seed = seed || {};
+  const s = seed.dp || {};
+  return {
+    id: uid(),
+    beteckning: seed.beteckning || '',
+    ort: seed.ort || '',
+    kommun: seed.kommun || '',
+    lage: seed.lage || '',
+    agarstruktur:{
+      typ: (seed.agarstruktur && seed.agarstruktur.typ) || 'helagt',
+      bolag: (seed.agarstruktur && seed.agarstruktur.bolag) || '',
+      andel: (seed.agarstruktur && seed.agarstruktur.andel) || '',
+      ovrigaDelagare: (seed.agarstruktur && seed.agarstruktur.ovrigaDelagare) || ''
+    },
+    dp:{
+      status: s.status || 'gallande',
+      lagaKraftAr: s.lagaKraftAr || '',
+      medgivenAnvandning: s.medgivenAnvandning || [],
+      byggratt:{
+        vaningar: (s.byggratt && s.byggratt.vaningar) || '',
+        byggnadshojd: (s.byggratt && s.byggratt.byggnadshojd) || '',
+        etal: (s.byggratt && s.byggratt.etal) || '',
+        bta: (s.byggratt && s.byggratt.bta) || ''
+      },
+      pagaende:{
+        skede: (s.pagaende && s.pagaende.skede) || '',
+        forvantatAntagande: (s.pagaende && s.pagaende.forvantatAntagande) || '',
+        syfte: (s.pagaende && s.pagaende.syfte) || ''
+      }
+    },
+    befintligBebyggelse: seed.befintligBebyggelse || '',
+    outnyttjadByggratt: seed.outnyttjadByggratt || '',
+    areal: seed.areal || '',
+    taxeringsvarde: seed.taxeringsvarde || '',
+    kassaflode: seed.kassaflode || '',
+    belastningar: seed.belastningar || '',
+    riskflaggor: seed.riskflaggor || '',
+    saljarnotis: seed.saljarnotis || '',
+    screening: seed.screening || null,
+    _status: 'pending',          // pending|running|done|error (för screening-kö)
+    _extractFlags: seed._extractFlags || []
+  };
+}
+
+/* ============================================================
+   INKONSISTENSDETEKTERING (klientsidan)
+   Fångar bl.a. GBJ:s Livets Träd 3 / Skogskärret 2-felet.
+   ============================================================ */
+function normText(t){
+  return (t||'').toLowerCase().replace(/[^a-zåäö0-9]+/g,' ').trim();
+}
+function dpSignatur(o){
+  const parts = [
+    o.dp.status,
+    o.dp.lagaKraftAr,
+    (o.dp.medgivenAnvandning||[]).join(','),
+    o.dp.byggratt.byggnadshojd,
+    o.dp.byggratt.vaningar,
+    o.dp.pagaende.syfte
+  ];
+  return normText(parts.join(' '));
+}
+function jaccard(a,b){
+  const sa=new Set(a.split(' ').filter(Boolean)), sb=new Set(b.split(' ').filter(Boolean));
+  if(!sa.size||!sb.size) return 0;
+  let inter=0; sa.forEach(w=>{ if(sb.has(w)) inter++; });
+  return inter/(sa.size+sb.size-inter);
+}
+/* Returnerar flaggor för en lista objekt (mutate ej) */
+function detectFlags(objekt){
+  const flags = {}; // id -> [strängar]
+  objekt.forEach(o=>flags[o.id]=[]);
+  // 1. obligatoriska fält
+  objekt.forEach(o=>{
+    if(!o.beteckning.trim()) flags[o.id].push('Fastighetsbeteckning saknas.');
+    if(!o.ort.trim()) flags[o.id].push('Ort/kommun saknas.');
+  });
+  // 2. duplicerad läges-/DP-beskrivning mellan objekt
+  //    Jämför den samlade prosan (läge + syfte + befintligt), där felkopiering landar.
+  const compStr=o=>normText([o.lage, o.dp.pagaende.syfte, o.befintligBebyggelse].filter(Boolean).join(' '));
+  for(let i=0;i<objekt.length;i++){
+    for(let j=i+1;j<objekt.length;j++){
+      const a=objekt[i], b=objekt[j];
+      const sa=compStr(a), sb=compStr(b);
+      const longEnough = sa.split(' ').length>=6 && sb.split(' ').length>=6;
+      if(longEnough && jaccard(sa,sb)>=0.7){
+        const oA = (a.ort||'').toLowerCase(), oB=(b.ort||'').toLowerCase();
+        const diffOrt = oA && oB && oA!==oB;
+        const msg = `DP-/lägesbeskrivning nära identisk med ${b.beteckning||'annat objekt'}${diffOrt?' (annan ort)':''} — verifiera att texten inte är felkopierad.`;
+        flags[a.id].push(msg);
+        flags[b.id].push(`DP-/lägesbeskrivning nära identisk med ${a.beteckning||'annat objekt'} — verifiera.`);
+      }
+    }
+  }
+  // 3. medge: gällande DP men inget år
+  objekt.forEach(o=>{
+    if(o.dp.status==='gallande' && !String(o.dp.lagaKraftAr).trim())
+      flags[o.id].push('Gällande DP angiven men laga kraft-år saknas.');
+  });
+  return flags;
+}
+
+/* ============================================================
+   API-anrop (Netlify-funktioner)
+   ============================================================ */
+async function callExtract(pdfBase64){
+  const r = await fetch('/.netlify/functions/extract-pdf',{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ pdfBase64 })
+  });
+  if(!r.ok){
+    let m='Extraktion misslyckades.'; try{ m=(await r.json()).error||m; }catch(e){}
+    if(r.status===404) m='Hittar inte funktionen extract-pdf. Är projektet deployat på Netlify?';
+    throw new Error(m);
+  }
+  return r.json();
+}
+async function callScreen(objekt, kontext){
+  const r = await fetch('/.netlify/functions/screen',{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ objekt, kontext })
+  });
+  if(!r.ok){
+    let m='Screening misslyckades.'; try{ m=(await r.json()).error||m; }catch(e){}
+    if(r.status===404) m='Hittar inte funktionen screen. Är projektet deployat på Netlify?';
+    throw new Error(m);
+  }
+  return r.json();
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+const main = document.getElementById('main');
+
+function render(){
+  renderPfPick();
+  const pf = activePf();
+  if(!pf){ renderEmpty(); return; }
+  renderPortfolio(pf);
+}
+
+function renderPfPick(){
+  const el = document.getElementById('pfPick');
+  if(!state.portfolios.length){ el.innerHTML=''; return; }
+  el.innerHTML = `<select id="pfSelect">${
+    state.portfolios.map(p=>`<option value="${p.id}" ${p.id===state.activeId?'selected':''}>${esc(p.namn)} (${p.objekt.length})</option>`).join('')
+  }</select>`;
+  document.getElementById('pfSelect').onchange = e=>{ state.activeId=e.target.value; save(); render(); };
+}
+
+function renderEmpty(){
+  main.innerHTML = `
+  <div class="empty">
+    <h1>Förstå portföljen<br>bättre än någon annan.</h1>
+    <p class="lead">Mata in en fastighetsportfölj, screena hela på en gång och tratta ned mot konkreta affärsmöjligheter och köpare. Börja med att ladda upp ett portföljdokument eller lägg in ett objekt manuellt.</p>
+    <div class="intake-cards">
+      <div class="intake-card clay" id="ic-pdf">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none"><path d="M13 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V9l-6-6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M13 3v6h6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+        <h3>Ladda upp portfölj-PDF</h3>
+        <p>Claude läser dokumentet och extraherar objekten. Du granskar och korrigerar innan något sparas — inkonsistenser flaggas automatiskt.</p>
+      </div>
+      <div class="intake-card" id="ic-manual">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <h3>Lägg till objekt manuellt</h3>
+        <p>Fyll i fastighetsbeteckning, läge, ägarstruktur och detaljplanestatus i ett strukturerat formulär. Den pålitliga grunden.</p>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('ic-pdf').onclick = ()=>{ ensurePf(); document.getElementById('pdfInput').click(); };
+  document.getElementById('ic-manual').onclick = ()=>{ ensurePf(); openForm(null); };
+}
+
+function renderPortfolio(pf){
+  const objs = pf.objekt;
+  const screened = objs.filter(o=>o.screening).length;
+  // kategorifördelning
+  const dist = {A:0,B:0,C:0,D:0,E:0,none:0};
+  objs.forEach(o=>{ const k=o.screening&&o.screening.kategori; if(dist[k]!==undefined&&k) dist[k]++; else dist.none++; });
+  const totKnown = dist.A+dist.B+dist.C+dist.D+dist.E;
+
+  const sorted = sortObjekt(objs);
+  const flags = detectFlags(objs);
+
+  main.innerHTML = `
+  <div class="pf-head">
+    <div class="pf-title">
+      <h1>${esc(pf.namn)}</h1>
+      <div class="pf-meta">
+        <span><b class="mono">${objs.length}</b> objekt</span>
+        <span>·</span>
+        <span>${screened} screenade</span>
+      </div>
+    </div>
+    <div class="pf-actions">
+      <button class="btn btn-ghost btn-sm" id="renamePf">Byt namn</button>
+      <button class="btn btn-ghost btn-sm" id="addPdf">Ladda upp PDF</button>
+      <button class="btn btn-ghost btn-sm" id="addManual">+ Objekt</button>
+      <button class="btn btn-clay btn-sm" id="screenAll" ${objs.length?'':'disabled'}>Screena alla</button>
+    </div>
+  </div>
+
+  ${totKnown ? renderSynthbar(dist,totKnown) : ''}
+
+  <div class="progress-wrap" id="progress">
+    <span class="txt" id="progTxt">Screenar…</span>
+    <div class="bar"><i id="progBar"></i></div>
+    <span class="mono" id="progNum"></span>
+  </div>
+
+  ${objs.length ? `
+    <div class="tools">
+      <span class="label">Sortera:</span>
+      <div class="sortgroup">
+        ${[['kategori','Kategori'],['ort','Ort'],['spar','Spår'],['larm','Larm']]
+          .map(([k,l])=>`<button data-sort="${k}" class="${sortKey===k?'on':''}">${l}</button>`).join('')}
+      </div>
+    </div>
+    <div class="obj-list">${sorted.map((o,i)=>renderObj(o,objs.indexOf(o)+1,flags[o.id]||[])).join('')}</div>
+  ` : `
+    <div class="empty-block">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="1.5"/></svg>
+      <p>Inga objekt ännu. Ladda upp en PDF eller lägg till manuellt.</p>
+    </div>
+  `}`;
+
+  // bind
+  document.getElementById('renamePf').onclick = renamePf;
+  document.getElementById('addPdf').onclick = ()=>document.getElementById('pdfInput').click();
+  document.getElementById('addManual').onclick = ()=>openForm(null);
+  const sa = document.getElementById('screenAll'); if(sa) sa.onclick = screenAll;
+  main.querySelectorAll('[data-sort]').forEach(b=> b.onclick=()=>{ sortKey=b.dataset.sort; render(); });
+  main.querySelectorAll('[data-edit]').forEach(b=> b.onclick=()=>openForm(b.dataset.edit));
+}
+
+function renderSynthbar(dist,tot){
+  const order=['A','B','C','D','E'];
+  const seg = order.map(k=> dist[k]? `<span class="kat-${k}-bg" style="width:${(dist[k]/tot*100).toFixed(1)}%" title="${KATEGORI[k].label}: ${dist[k]}"></span>`:'').join('');
+  const legend = order.filter(k=>dist[k]).map(k=>`
+    <div class="li">
+      <span class="sw kat-${k}-bg"></span>
+      <span class="n">${k}</span>
+      <span>${KATEGORI[k].label}</span>
+      <span class="desc">·&nbsp;${dist[k]} st</span>
+    </div>`).join('');
+  return `<div class="synthbar">
+    <div class="lbl"><b>De fem affärerna</b> — kategorifördelning (förhandsvisning av portföljsyntesen, steg 5)</div>
+    <div class="seg">${seg}</div>
+    <div class="seg-legend">${legend}</div>
+  </div>`;
+}
+
+function renderObj(o, num, flags){
+  const sc = o.screening;
+  const spar = sc && sc.spar && SPAR[sc.spar] ? sc.spar : null;
+  const kat = sc && sc.kategori && KATEGORI[sc.kategori] ? sc.kategori : null;
+  const larmCount = (sc && sc.larm ? sc.larm.length : 0) + flags.length;
+  const allLarm = [...(sc&&sc.larm?sc.larm.map(l=>l.text||l):[]), ...flags];
+  const why = sc && sc.varforIntressant ? esc(sc.varforIntressant) : '';
+
+  return `<div class="obj" data-spar="${spar||''}">
+    <span class="stripe"></span>
+    <span class="idx">${String(num).padStart(2,'0')}</span>
+    <div class="body">
+      <div class="top">
+        <span class="bet">${esc(o.beteckning)||'<span class="muted">Namnlöst objekt</span>'}</span>
+        <span class="ort">${esc(o.ort||o.kommun||'—')}</span>
+        ${spar?`<span class="chip spar" data-s="${spar}"><span class="d"></span>${SPAR[spar].label}</span>`:''}
+      </div>
+      ${why?`<div class="why">${why}</div>`
+        :`<div class="why empty">${sc?'—':'Ej screenad ännu.'}</div>`}
+      ${dpLine(o)}
+    </div>
+    <div class="right">
+      ${larmCount?`<span class="larm-badge" title="${esc(allLarm.join(' • '))}">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5L15 14H1L8 1.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6.5v3.5M8 12h.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>${larmCount}</span>`:''}
+      ${kat?`<span class="kat" data-k="${kat}" title="${KATEGORI[kat].label} — ${KATEGORI[kat].desc}">${kat}</span>`
+            :`<span class="kat ph" title="Ej kategoriserad">–</span>`}
+      <span class="status-dot ${o._status||'pending'}" title="${statusLabel(o._status)}"></span>
+      <button class="btn-text btn-sm" data-edit="${o.id}">Redigera</button>
+    </div>
+  </div>`;
+}
+function dpLine(o){
+  const bits=[];
+  if(o.dp.status==='gallande'){
+    bits.push(`<b>DP</b> gällande${o.dp.lagaKraftAr?` ${esc(o.dp.lagaKraftAr)}`:''}`);
+    if(o.dp.medgivenAnvandning.length) bits.push(esc(o.dp.medgivenAnvandning.join('/')));
+    if(o.dp.byggratt.vaningar) bits.push(esc(o.dp.byggratt.vaningar)+' vån');
+    if(o.dp.byggratt.byggnadshojd) bits.push(esc(o.dp.byggratt.byggnadshojd)+' m');
+  } else if(o.dp.status==='pagaende'){
+    bits.push(`<b>DP</b> pågående${o.dp.pagaende.skede?` (${esc(o.dp.pagaende.skede.toLowerCase())})`:''}`);
+    if(o.dp.pagaende.forvantatAntagande) bits.push('antas '+esc(o.dp.pagaende.forvantatAntagande));
+  } else {
+    bits.push(`<b>DP</b> saknas`);
+  }
+  if(o.agarstruktur.typ==='delagt') bits.push(`delägt${o.agarstruktur.andel?` ${esc(o.agarstruktur.andel)}`:''}`);
+  if(o.taxeringsvarde) bits.push('tax. '+esc(o.taxeringsvarde));
+  return `<div class="detailrow">${bits.map(b=>`<span>${b}</span>`).join('')}</div>`;
+}
+function statusLabel(s){return {pending:'Ej screenad',running:'Screenar…',done:'Screenad',error:'Fel vid screening'}[s||'pending'];}
+
+function sortObjekt(objs){
+  const arr=[...objs];
+  if(sortKey==='ort') arr.sort((a,b)=>(a.ort||'zzz').localeCompare(b.ort||'zzz','sv'));
+  else if(sortKey==='spar') arr.sort((a,b)=>spv(a)-spv(b));
+  else if(sortKey==='larm') arr.sort((a,b)=>larmN(b)-larmN(a));
+  else arr.sort((a,b)=>katV(a)-katV(b)); // kategori A..E, ej-screenade sist
+  return arr;
+}
+function katV(o){const k=o.screening&&o.screening.kategori; return k?('ABCDE'.indexOf(k)):99;}
+function spv(o){const s=o.screening&&o.screening.spar; return s?Object.keys(SPAR).indexOf(s):99;}
+function larmN(o){return (o.screening&&o.screening.larm?o.screening.larm.length:0);}
+
+/* ============================================================
+   PORTFÖLJ-CRUD
+   ============================================================ */
+function ensurePf(){
+  if(activePf()) return;
+  const pf={ id:uid(), namn:'Ny portfölj', skapad:Date.now(), objekt:[] };
+  state.portfolios.push(pf); state.activeId=pf.id; save();
+}
+function newPf(){
+  const namn = prompt('Namn på portföljen:', 'Ny portfölj');
+  if(namn===null) return;
+  const pf={ id:uid(), namn:namn.trim()||'Ny portfölj', skapad:Date.now(), objekt:[] };
+  state.portfolios.push(pf); state.activeId=pf.id; save(); render();
+  toast('Portfölj skapad.');
+}
+function renamePf(){
+  const pf=activePf(); if(!pf) return;
+  const namn=prompt('Nytt namn:', pf.namn);
+  if(namn===null) return;
+  pf.namn=namn.trim()||pf.namn; save(); render();
+}
+document.getElementById('newPfBtn').onclick = newPf;
+
+/* ============================================================
+   FORMULÄR (drawer)
+   ============================================================ */
+const drawer=document.getElementById('drawer'), drawerOverlay=document.getElementById('drawerOverlay');
+function openForm(id){
+  ensurePf();
+  editingId=id;
+  const o = id ? activePf().objekt.find(x=>x.id===id) : newObjekt();
+  document.getElementById('drawerTitle').textContent = id?'Redigera objekt':'Nytt objekt';
+  document.getElementById('formBody').innerHTML = formHTML(o);
+  bindFormConditions();
+  drawer.classList.add('show'); drawerOverlay.classList.add('show');
+  // håll temporärt objekt
+  drawer._obj = id ? JSON.parse(JSON.stringify(o)) : o;
+}
+function closeForm(){ drawer.classList.remove('show'); drawerOverlay.classList.remove('show'); editingId=null; }
+document.getElementById('drawerClose').onclick=closeForm;
+document.getElementById('formCancel').onclick=closeForm;
+drawerOverlay.onclick=closeForm;
+
+function formHTML(o){
+  return `
+  <div class="field">
+    <label>Fastighetsbeteckning</label>
+    <input type="text" id="f_bet" value="${esc(o.beteckning)}" placeholder="t.ex. Smältaren 5-7">
+  </div>
+  <div class="row2">
+    <div class="field"><label>Ort</label><input type="text" id="f_ort" value="${esc(o.ort)}" placeholder="Växjö"></div>
+    <div class="field"><label>Kommun</label><input type="text" id="f_kommun" value="${esc(o.kommun)}" placeholder="Växjö"></div>
+  </div>
+  <div class="field">
+    <label>Läge <span class="hint">— fritext</span></label>
+    <textarea id="f_lage" placeholder="Beskriv läget, närhet, trafik, omgivning…">${esc(o.lage)}</textarea>
+  </div>
+
+  <fieldset class="fieldset">
+    <legend>Ägarstruktur</legend>
+    <div class="field">
+      <label>Ägande</label>
+      <select id="f_ag_typ">
+        <option value="helagt" ${o.agarstruktur.typ==='helagt'?'selected':''}>Helägt</option>
+        <option value="delagt" ${o.agarstruktur.typ==='delagt'?'selected':''}>Delägt (JV / bolag)</option>
+      </select>
+    </div>
+    <div class="cond ${o.agarstruktur.typ==='delagt'?'show':''}" id="cond_delagt">
+      <div class="field"><label>Bolag</label><input type="text" id="f_ag_bolag" value="${esc(o.agarstruktur.bolag)}" placeholder="t.ex. Teleborgs Ängar AB"></div>
+      <div class="row2">
+        <div class="field"><label>Ägarandel</label><input type="text" id="f_ag_andel" value="${esc(o.agarstruktur.andel)}" placeholder="ca 23 %"></div>
+        <div class="field"><label>Övriga delägare</label><input type="text" id="f_ag_ovr" value="${esc(o.agarstruktur.ovrigaDelagare)}" placeholder="Obos, kommunen…"></div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend>Detaljplan</legend>
+    <div class="field">
+      <label>Status</label>
+      <select id="f_dp_status">
+        <option value="gallande" ${o.dp.status==='gallande'?'selected':''}>Gällande DP</option>
+        <option value="pagaende" ${o.dp.status==='pagaende'?'selected':''}>Pågående planarbete</option>
+        <option value="saknas" ${o.dp.status==='saknas'?'selected':''}>Saknas (ej planlagd)</option>
+      </select>
+    </div>
+
+    <div class="cond ${o.dp.status==='gallande'?'show':''}" id="cond_gallande">
+      <div class="field">
+        <label>Laga kraft-år</label>
+        <input type="text" id="f_dp_ar" value="${esc(o.dp.lagaKraftAr)}" placeholder="2019">
+      </div>
+      <div class="field">
+        <label>Medgiven användning</label>
+        <div class="checks" id="f_dp_anv">
+          ${ANVANDNING.map(a=>`<label><input type="checkbox" value="${a.c}" ${o.dp.medgivenAnvandning.includes(a.c)?'checked':''}><span>${a.label}</span></label>`).join('')}
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Våningar</label><input type="text" id="f_br_van" value="${esc(o.dp.byggratt.vaningar)}" placeholder="3-5"></div>
+        <div class="field"><label>Byggnadshöjd (m)</label><input type="text" id="f_br_hojd" value="${esc(o.dp.byggratt.byggnadshojd)}" placeholder="28"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>e-tal</label><input type="text" id="f_br_etal" value="${esc(o.dp.byggratt.etal)}" placeholder="0,40"></div>
+        <div class="field"><label>BTA (kvm)</label><input type="text" id="f_br_bta" value="${esc(o.dp.byggratt.bta)}" placeholder=""></div>
+      </div>
+    </div>
+
+    <div class="cond ${o.dp.status==='pagaende'?'show':''}" id="cond_pagaende">
+      <div class="row2">
+        <div class="field">
+          <label>Skede</label>
+          <select id="f_pa_skede">
+            <option value="">—</option>
+            ${SKEDEN.map(s=>`<option ${o.dp.pagaende.skede===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field"><label>Förväntat antagande</label><input type="text" id="f_pa_antag" value="${esc(o.dp.pagaende.forvantatAntagande)}" placeholder="hösten 2026"></div>
+      </div>
+      <div class="field"><label>Syftar möjliggöra</label><textarea id="f_pa_syfte" placeholder="t.ex. bostäder 4-7 våningar, ökad byggrätt…">${esc(o.dp.pagaende.syfte)}</textarea></div>
+    </div>
+  </fieldset>
+
+  <div class="row2">
+    <div class="field"><label>Areal</label><input type="text" id="f_areal" value="${esc(o.areal)}" placeholder="kvm / ha"></div>
+    <div class="field"><label>Taxeringsvärde</label><input type="text" id="f_tax" value="${esc(o.taxeringsvarde)}" placeholder="kr"></div>
+  </div>
+  <div class="field"><label>Befintlig bebyggelse</label><textarea id="f_bef" placeholder="Vad står på fastigheten idag?">${esc(o.befintligBebyggelse)}</textarea></div>
+  <div class="field"><label>Outnyttjad byggrätt <span class="hint">— skillnad mot befintligt</span></label><textarea id="f_out" placeholder="Hur mycket byggrätt är outnyttjad?">${esc(o.outnyttjadByggratt)}</textarea></div>
+  <div class="field"><label>Kassaflöde / hyresgäst</label><input type="text" id="f_kf" value="${esc(o.kassaflode)}" placeholder="ev. löpande intäkter"></div>
+  <div class="field"><label>Belastningar <span class="hint">— servitut, nyttjanderätt</span></label><textarea id="f_bel" placeholder="">${esc(o.belastningar)}</textarea></div>
+  <div class="field"><label>Riskflaggor</label><textarea id="f_risk" placeholder="förorening, överklagande, m.m.">${esc(o.riskflaggor)}</textarea></div>
+  <div class="field"><label>Säljarnotis <span class="hint">— intern</span></label><textarea id="f_notis" placeholder="">${esc(o.saljarnotis)}</textarea></div>
+  `;
+}
+function bindFormConditions(){
+  const agTyp=document.getElementById('f_ag_typ');
+  agTyp.onchange=()=>document.getElementById('cond_delagt').classList.toggle('show',agTyp.value==='delagt');
+  const dpStatus=document.getElementById('f_dp_status');
+  dpStatus.onchange=()=>{
+    document.getElementById('cond_gallande').classList.toggle('show',dpStatus.value==='gallande');
+    document.getElementById('cond_pagaende').classList.toggle('show',dpStatus.value==='pagaende');
+  };
+}
+function readForm(){
+  const v=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
+  const anv=[...document.querySelectorAll('#f_dp_anv input:checked')].map(c=>c.value);
+  const base = drawer._obj || newObjekt();
+  return {
+    ...base,
+    beteckning:v('f_bet'), ort:v('f_ort'), kommun:v('f_kommun'), lage:v('f_lage'),
+    agarstruktur:{ typ:v('f_ag_typ'), bolag:v('f_ag_bolag'), andel:v('f_ag_andel'), ovrigaDelagare:v('f_ag_ovr') },
+    dp:{
+      status:v('f_dp_status'), lagaKraftAr:v('f_dp_ar'), medgivenAnvandning:anv,
+      byggratt:{ vaningar:v('f_br_van'), byggnadshojd:v('f_br_hojd'), etal:v('f_br_etal'), bta:v('f_br_bta') },
+      pagaende:{ skede:v('f_pa_skede'), forvantatAntagande:v('f_pa_antag'), syfte:v('f_pa_syfte') }
+    },
+    areal:v('f_areal'), taxeringsvarde:v('f_tax'),
+    befintligBebyggelse:v('f_bef'), outnyttjadByggratt:v('f_out'),
+    kassaflode:v('f_kf'), belastningar:v('f_bel'), riskflaggor:v('f_risk'), saljarnotis:v('f_notis')
+  };
+}
+document.getElementById('formSave').onclick=()=>{
+  const pf=activePf(); const data=readForm();
+  if(editingId){
+    const i=pf.objekt.findIndex(x=>x.id===editingId);
+    // ändrad indata → screening kan vara inaktuell; behåll men markera
+    pf.objekt[i]={...pf.objekt[i],...data};
+  } else {
+    pf.objekt.push(data);
+  }
+  save(); closeForm(); render(); toast('Objekt sparat.');
+};
+
+/* ============================================================
+   PDF-UPPLADDNING → EXTRAKTION → GRANSKNING
+   ============================================================ */
+document.getElementById('pdfInput').onchange = async (e)=>{
+  const file=e.target.files[0]; e.target.value='';
+  if(!file) return;
+  if(file.size > 5.5*1024*1024){
+    toast('PDF:en är större än ~5,5 MB. Netlify-funktioner har en gräns runt 6 MB. Dela upp dokumentet.', true);
+    return;
+  }
+  ensurePf();
+  toast('Läser PDF…');
+  try{
+    const b64 = await fileToBase64(file);
+    const res = await callExtract(b64);
+    const list = (res.objekt||[]).map(seed=>newObjekt(seed));
+    if(!list.length){ toast('Inga objekt kunde extraheras.', true); return; }
+    reviewObjekt = list;
+    openReview();
+  }catch(err){ toast(err.message, true); }
+};
+function fileToBase64(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=()=>res(r.result.split(',')[1]);
+    r.onerror=()=>rej(new Error('Kunde inte läsa filen.'));
+    r.readAsDataURL(file);
+  });
+}
+
+const reviewModal=document.getElementById('reviewModal'), modalOverlay=document.getElementById('modalOverlay');
+function openReview(){
+  renderReview();
+  reviewModal.classList.add('show'); modalOverlay.classList.add('show');
+}
+function closeReview(){ reviewModal.classList.remove('show'); modalOverlay.classList.remove('show'); reviewObjekt=[]; }
+document.getElementById('reviewCancel').onclick=closeReview;
+modalOverlay.onclick=closeReview;
+
+function renderReview(){
+  const flags=detectFlags(reviewObjekt);
+  const flagged=Object.values(flags).filter(f=>f.length).length;
+  document.getElementById('reviewCount').innerHTML =
+    `${reviewObjekt.length} objekt extraherade · ${flagged?`<b style="color:var(--warn)">${flagged} med inkonsistenser</b>`:'inga inkonsistenser funna'}`;
+  document.getElementById('reviewBody').innerHTML = `<div class="rev">${
+    reviewObjekt.map((o,i)=>revItem(o,i,flags[o.id]||[])).join('')
+  }</div>`;
+  bindReview();
+}
+function revItem(o,i,flags){
+  const ex = (o._extractFlags||[]);
+  const allFlags=[...flags,...ex];
+  return `<div class="rev-item ${allFlags.length?'flagged':''}" data-i="${i}">
+    <div class="rev-head">
+      <span class="num">${String(i+1).padStart(2,'0')}</span>
+      <input class="bet-edit" data-f="beteckning" value="${esc(o.beteckning)}" placeholder="Fastighetsbeteckning">
+      <button class="btn-text btn-sm" data-del="${i}">Ta bort</button>
+    </div>
+    <div class="rev-grid">
+      <div class="cell"><label>Ort</label><input data-f="ort" value="${esc(o.ort)}"></div>
+      <div class="cell"><label>Kommun</label><input data-f="kommun" value="${esc(o.kommun)}"></div>
+      <div class="cell">
+        <label>DP-status</label>
+        <select data-f="dp.status">
+          <option value="gallande" ${o.dp.status==='gallande'?'selected':''}>Gällande</option>
+          <option value="pagaende" ${o.dp.status==='pagaende'?'selected':''}>Pågående</option>
+          <option value="saknas" ${o.dp.status==='saknas'?'selected':''}>Saknas</option>
+        </select>
+      </div>
+      <div class="cell"><label>Laga kraft-år</label><input data-f="dp.lagaKraftAr" value="${esc(o.dp.lagaKraftAr)}"></div>
+      <div class="cell"><label>Medgiven användning</label><input data-f="dp.medgivenAnvandning" value="${esc((o.dp.medgivenAnvandning||[]).join(', '))}" placeholder="B, C…"></div>
+      <div class="cell"><label>Våningar / höjd</label><input data-f="_vanhojd" value="${esc([o.dp.byggratt.vaningar,o.dp.byggratt.byggnadshojd&&o.dp.byggratt.byggnadshojd+' m'].filter(Boolean).join(' / '))}"></div>
+      <div class="cell full"><label>Läge</label><input data-f="lage" value="${esc(o.lage)}"></div>
+      <div class="cell full"><label>Syfte (pågående DP) / övrigt</label><input data-f="dp.pagaende.syfte" value="${esc(o.dp.pagaende.syfte)}"></div>
+      <div class="cell"><label>Ägande</label>
+        <select data-f="agarstruktur.typ">
+          <option value="helagt" ${o.agarstruktur.typ==='helagt'?'selected':''}>Helägt</option>
+          <option value="delagt" ${o.agarstruktur.typ==='delagt'?'selected':''}>Delägt</option>
+        </select>
+      </div>
+      <div class="cell"><label>Bolag / andel</label><input data-f="_agbolag" value="${esc([o.agarstruktur.bolag,o.agarstruktur.andel].filter(Boolean).join(' · '))}"></div>
+    </div>
+    ${allFlags.length?`<div class="rev-flags">${allFlags.map(f=>`<div class="flag">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5L15 14H1L8 1.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6.5v3.5M8 12h.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span>${esc(f)}</span></div>`).join('')}</div>`:''}
+  </div>`;
+}
+function bindReview(){
+  reviewModal.querySelectorAll('.rev-item').forEach(item=>{
+    const i=+item.dataset.i;
+    item.querySelectorAll('[data-f]').forEach(inp=>{
+      inp.oninput=()=>{
+        const f=inp.dataset.f, val=inp.value;
+        const o=reviewObjekt[i];
+        if(f==='_vanhojd'){
+          const parts=val.split('/').map(s=>s.trim());
+          o.dp.byggratt.vaningar=parts[0]||''; o.dp.byggratt.byggnadshojd=(parts[1]||'').replace(/\s*m$/,'');
+        } else if(f==='_agbolag'){
+          const parts=val.split('·').map(s=>s.trim());
+          o.agarstruktur.bolag=parts[0]||''; o.agarstruktur.andel=parts[1]||'';
+        } else if(f==='dp.medgivenAnvandning'){
+          o.dp.medgivenAnvandning=val.split(',').map(s=>s.trim()).filter(Boolean);
+        } else { setPath(o,f,val); }
+      };
+    });
+    const del=item.querySelector('[data-del]');
+    if(del) del.onclick=()=>{ reviewObjekt.splice(i,1); renderReview(); };
+  });
+}
+function setPath(obj,path,val){
+  const keys=path.split('.'); let cur=obj;
+  for(let k=0;k<keys.length-1;k++) cur=cur[keys[k]];
+  cur[keys[keys.length-1]]=val;
+}
+document.getElementById('reviewConfirm').onclick=()=>{
+  const pf=activePf();
+  reviewObjekt.forEach(o=>{ o._extractFlags=[]; pf.objekt.push(o); });
+  save(); closeReview(); render();
+  toast(`${pf.objekt.length} objekt i portföljen. Granska larmen och kör screening.`);
+};
+
+/* ============================================================
+   SCREENING-KÖ (sekventiell, progress, retry-vänlig)
+   ============================================================ */
+let screening=false;
+async function screenAll(){
+  if(screening) return;
+  const pf=activePf(); if(!pf||!pf.objekt.length) return;
+  screening=true;
+  const objs=pf.objekt;
+  const kontext=objs.map(o=>({ beteckning:o.beteckning, ort:o.ort, dpSignatur:dpSignatur(o) }));
+  const prog=document.getElementById('progress');
+  prog.classList.add('show');
+  const total=objs.length; let done=0, errs=0;
+  for(const o of objs){
+    o._status='running'; updateProgress(done,total,o.beteckning); renderRowStatuses();
+    try{
+      const res=await callScreen(stripForApi(o), kontext);
+      o.screening=res; o._status='done';
+    }catch(err){ o._status='error'; errs++; if(errs===1) toast(err.message,true); }
+    done++; save(); updateProgress(done,total);
+    renderRowStatuses();
+    await sleep(350); // skonsamt mot rate limits
+  }
+  prog.classList.remove('show');
+  screening=false; render();
+  toast(errs?`Screening klar med ${errs} fel — kör om vid behov.`:'Screening klar.');
+}
+function stripForApi(o){
+  // skicka bara analysrelevanta fält, ej interna
+  const {_status,_extractFlags,screening,id,...rest}=o; return rest;
+}
+function updateProgress(done,total,name){
+  document.getElementById('progBar').style.width=(done/total*100)+'%';
+  document.getElementById('progNum').textContent=`${done}/${total}`;
+  if(name!==undefined) document.getElementById('progTxt').textContent=`Screenar ${name||'objekt'}…`;
+}
+function renderRowStatuses(){
+  // uppdatera bara status-prickarna utan full re-render (mjukare)
+  const pf=activePf(); if(!pf) return;
+  document.querySelectorAll('.obj').forEach(el=>{
+    const editBtn=el.querySelector('[data-edit]'); if(!editBtn) return;
+    const o=pf.objekt.find(x=>x.id===editBtn.dataset.edit); if(!o) return;
+    const dot=el.querySelector('.status-dot');
+    if(dot){ dot.className='status-dot '+(o._status||'pending'); dot.title=statusLabel(o._status); }
+  });
+}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+/* ============================================================
+   HJÄLP
+   ============================================================ */
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+let toastT;
+function toast(msg,err){
+  const t=document.getElementById('toast');
+  t.className='toast'+(err?' err':'');
+  t.innerHTML=(err?'<svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5L15 14H1L8 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M8 6v3.5M8 11.5h.01" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>':'')+esc(msg);
+  t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),err?5200:2800);
+}
+
+/* ---------- init ---------- */
+render();
+</script>
+</body>
+</html>
